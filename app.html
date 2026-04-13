@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Braves Trivia Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #111;
+        }
+
+        .app-container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #13274f;
+        }
+
+        .question {
+            font-size: 1.3rem;
+            margin: 20px 0;
+        }
+
+        .answers button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 12px;
+            border: none;
+            background: #ba0c2f;
+            color: white;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .answers button:hover {
+            background: #8f0923;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .nav-btn {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background: #13274f;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+        .nav-btn:hover {
+            background: #0e1d39;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <h1>Atlanta Braves Trivia Challenge</h1>
+        <p>Test your knowledge of Braves baseball.</p>
+
+        <div id="quiz-box">
+            <div class="question" id="question">Question goes here</div>
+            <div class="answers" id="answers"></div>
+            <div id="result"></div>
+        </div>
+
+        <a href="scratch.html" class="nav-btn">Back to Scratch Page</a>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What city do the Braves play in?",
+                answers: ["Atlanta", "Miami", "Dallas", "Chicago"],
+                correct: "Atlanta"
+            },
+            {
+                question: "What sport do the Braves play?",
+                answers: ["Football", "Basketball", "Baseball", "Soccer"],
+                correct: "Baseball"
+            },
+            {
+                question: "What is the name of the Braves' home stadium?",
+                answers: ["SunTrust Dome", "Truist Park", "Turner Stadium", "Braves Field"],
+                correct: "Truist Park"
+            },
+            {
+                question: "Which league are the Braves part of?",
+                answers: ["NFL", "NBA", "MLB", "NHL"],
+                correct: "MLB"
+            },
+            {
+                question: "What is a home run in baseball?",
+                answers: [
+                    "A goal scored from midfield",
+                    "A touchdown pass",
+                    "A hit that lets the batter circle all bases and score",
+                    "A defensive timeout"
+                ],
+                correct: "A hit that lets the batter circle all bases and score"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        const questionEl = document.getElementById("question");
+        const answersEl = document.getElementById("answers");
+        const resultEl = document.getElementById("result");
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                showFinalScore();
+                return;
+            }
+
+            const q = questions[currentQuestion];
+            questionEl.textContent = q.question;
+            answersEl.innerHTML = "";
+            resultEl.textContent = "";
+
+            q.answers.forEach(answer => {
+                const button = document.createElement("button");
+                button.textContent = answer;
+                button.onclick = () => checkAnswer(answer);
+                answersEl.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selected) {
+            const correct = questions[currentQuestion].correct;
+            if (selected === correct) {
+                score++;
+                resultEl.textContent = "Correct!";
+            } else {
+                resultEl.textContent = "Wrong! Correct answer: " + correct;
+            }
+
+            currentQuestion++;
+            setTimeout(loadQuestion, 1000);
+        }
+
+        function showFinalScore() {
+            questionEl.textContent = "Quiz Complete!";
+            answersEl.innerHTML = "";
+            resultEl.innerHTML = `You scored ${score} out of ${questions.length}. <br><br>
+            <button onclick="restartQuiz()" style="padding:10px 18px; border:none; border-radius:8px; background:#ba0c2f; color:white; cursor:pointer;">Play Again</button>`;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
